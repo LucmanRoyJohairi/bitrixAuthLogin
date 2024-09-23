@@ -1,9 +1,18 @@
+import { useState } from "react";
 
 const Login: React.FC = () => {
-  const handleBitrixSignIn = () => {
-    // Add the Bitrix OAuth logic here
-    console.log('Signing in with Bitrix...');
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+
+  const handleBitrixSignIn = async() => {
+    // Redirect the user to the Bitrix OAuth login page
+    const clientId = "local.66ebe4aa0d8477.79213880"; // Use your actual client ID
+    const redirectUri = encodeURIComponent('https://bitrix-auth-api.vercel.app/bitrix/callback');
+    const bitrixAuthUrl = `https://oauth.bitrix.info/oauth/authorize/?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+    // Redirect user to Bitrix login page
+    window.location.href = bitrixAuthUrl;
   };
+
+
 
   return (
     <div className="flex items-center justify-center bg-gray-100 w-full">
@@ -18,6 +27,8 @@ const Login: React.FC = () => {
           <input
             type="email"
             id="email"
+            onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+            value={credentials.email}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="you@example.com"
           />
@@ -31,6 +42,8 @@ const Login: React.FC = () => {
           <input
             type="password"
             id="password"
+            onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+            value={credentials.password}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="********"
           />
